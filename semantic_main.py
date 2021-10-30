@@ -9,7 +9,7 @@ import numpy as np
 import os
 from network.ResNet import *
 import argparse
-from dataloader.Dataset_semanticKITTI import *
+from dataloader.POSSDataset import *
 from utils import *
 from torch.utils.data import DataLoader, BatchSampler, RandomSampler
 import torch.distributed as dist
@@ -21,8 +21,8 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 
 parser = argparse.ArgumentParser()
 #parameters for dataset
-parser.add_argument('--dataset',dest= "dataset", default='semanticKITTI', help='')
-parser.add_argument('--root',  dest= "root", default='./Dataset/semanticKITTI/',help="./Dataset/semanticKITTI/")
+parser.add_argument('--dataset',dest= "dataset", default='POSSDataset', help='')
+parser.add_argument('--root',  dest= "root", default='/home/atas/poss_data/',help="/home/atas/poss_data/")
 parser.add_argument('--range_y', dest= "range_y", default=64, help="128")
 parser.add_argument('--range_x', dest= "range_x", default=2048, help="2048")
 parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val or trainval")
@@ -35,7 +35,7 @@ parser.add_argument('--if_range_mask', dest= "if_range_mask", default=True, help
 
 # network settings
 parser.add_argument('--backbone', dest= "backbone", default="ResNet34_point", help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest= "batch_size", default=2, help="bs")
+parser.add_argument('--batch_size', dest= "batch_size", default=1, help="bs")
 parser.add_argument('--if_BN', dest= "if_BN", default=True, help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest= "if_remission", default=True, help="if concatenate remmision in the input")
 parser.add_argument('--if_range', dest= "if_range", default=True, help="if concatenate range in the input")
@@ -79,7 +79,7 @@ if not(os.path.exists(save_path)):
 
 
 
-dataset_train=Dataset_semanticKITTI(root=args.root,split=args.code_mode,is_train=True, range_img_size=(args.range_y,args.range_x),if_aug=args.if_aug, if_range_mask=args.if_range_mask,if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
+dataset_train=POSSDataset(root=args.root,split=args.code_mode,is_train=True, range_img_size=(args.range_y,args.range_x),if_aug=args.if_aug, if_range_mask=args.if_range_mask,if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
 
 if args.if_multi_gpus:
@@ -167,7 +167,7 @@ for current_epoch in range(args.start_epoch,args.total_epoch):
 	for batch_ndx, (input_tensor,semantic_label,semantic_label_mask) in enumerate(data_loader_train):
 
 
-		#print (np.shape(semantic_label))
+		print (np.shape(semantic_label))
 		input_tensor=input_tensor.to(device)
 		semantic_label=torch.squeeze(semantic_label,axis=1).to(device)
 		semantic_label_mask=torch.squeeze(semantic_label_mask,axis=1)

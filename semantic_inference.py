@@ -66,8 +66,6 @@ dataset_train=Dataset_semanticKITTI(root=args.root,split='train',is_train=True, 
 inv_label_dict={0:0,1:10,2:11,3:15,4:18,5:20,6:30,7:31,8:32,9:40,10:44,11:48,12:49,13:50,14:51,15:70,16:71,17:72,18:80,19:81}
 
 
-
-
 save_path="./save_semantic/"
 temp_path=args.backbone+"_"+str(args.range_x)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(args.batch_size)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
 

@@ -1,7 +1,7 @@
 Dataset/semanticKITTI/*
 __pycache__
 */__pycache__
-method_predictions/*
+method_predictions/
 save*/*
 *.ply
 Cylinder3D-master/*

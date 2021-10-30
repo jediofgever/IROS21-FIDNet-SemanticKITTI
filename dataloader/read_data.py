@@ -24,12 +24,14 @@ LABEL_DICT = {
     22: "ground"}  # class definition
 SEM_COLOR = np.array([
     [0, 0, 0],                       # 0: "unlabeled"
-    [0, 0, 0], [0, 0, 0], [0, 0, 0],  # don't care
-    [255, 30, 30],                   # 4: "1 person"
-    [255, 30, 30],                   # 5: "2+ person"
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],  # don't care
+    [0, 100, 100],                   # 4: "1 person"
+    [0, 100, 100],                   # 5: "2+ person"
     [255, 40, 200],                  # 6: "rider"
     [100, 150, 245],                 # 7: "car"
-    [135, 60, 0],                      # 8: "trunk"
+    [135, 60, 0],                    # 8: "trunk"
     [0, 175, 0],                     # 9: "plants"
     [255, 0, 0],                     # 10: "traffic sign 1"
     [255, 0, 0],                     # 11: "traffic sign 2"
@@ -39,9 +41,11 @@ SEM_COLOR = np.array([
     [255, 200, 0],                   # 15: "building"
     [50, 255, 255],                  # 16: "cone/stone"
     [255, 120, 50],                  # 17: "fence"
-    [0, 0, 0], [0, 0, 0], [0, 0, 0],         # don't care
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],         # don't care
     [100, 230, 245],                 # 21: "bike"
-    [128, 128, 128]],                # 22: "ground"
+    [128, 0, 128]],                # 22: "ground"
     dtype=np.uint8)  # color definition
 
 

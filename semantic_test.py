@@ -10,7 +10,7 @@ import os
 from network.ResNet import *
 import argparse
 from torchvision.transforms import functional as FF
-from dataloader.Dataset_semanticKITTI import *
+from dataloader.POSSDataset import *
 from utils import *
 from dataloader.laserscan import SemLaserScan,LaserScan
 from postproc.KNN import KNN
@@ -21,8 +21,8 @@ from postproc.KNN import KNN
 
 parser = argparse.ArgumentParser()
 #parameters for dataset
-parser.add_argument('--dataset',dest= "dataset", default='semanticKITTI', help='')
-parser.add_argument('--root',  dest= "root", default='./Dataset/semanticKITTI/',help="./Dataset/semanticKITTI/")
+parser.add_argument('--dataset',dest= "dataset", default='POSSDataset', help='')
+parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/poss_data/',help="/home/fetulahatas1/poss_data/")
 parser.add_argument('--range_y', dest= "range_y", default=64, help="128")
 parser.add_argument('--range_x', dest= "range_x", default=2048, help="2048")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
@@ -61,7 +61,7 @@ args = parser.parse_args()
 
 inv_label_dict={0:0,1:10,2:11,3:15,4:18,5:20,6:30,7:31,8:32,9:40,10:44,11:48,12:49,13:50,14:51,15:70,16:71,17:72,18:80,19:81}
 
-dataset_train=Dataset_semanticKITTI(root=args.root,split='train',is_train=True, range_img_size=(args.range_y,args.range_x),if_aug='True', if_range_mask=args.if_range_mask,if_remission=args.if_remission, if_range=args.if_range,with_normal=args.with_normal)
+dataset_train=POSSDataset(root=args.root,split='test',is_train=True, range_img_size=(args.range_y,args.range_x),if_aug='True', if_range_mask=args.if_range_mask,if_remission=args.if_remission, if_range=args.if_range,with_normal=args.with_normal)
 
 
 
@@ -117,7 +117,7 @@ if args.if_KNN==1:
 	post_knn = KNN(knn_params, 20)
 
 
-all_seq_list=['11','12','13','14','15','16','17','18','19','20','21']
+all_seq_list=['00']
 
 
 
@@ -128,7 +128,7 @@ if not os.path.exists("./method_predictions/sequences/"):
 
 for seq_name in all_seq_list:
 
-	lidar_list=glob.glob(args.root+'/data_odometry_velodyne/*/*/'+'test/'+seq_name+'/*/*.bin')
+	lidar_list=glob.glob(args.root+'test/'+seq_name+'/*/*.bin')
 
 
 

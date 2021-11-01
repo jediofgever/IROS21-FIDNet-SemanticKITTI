@@ -107,8 +107,8 @@ learning_map = {
     11: 17,
     12: 21,
     13: 22,
-	18: 0,
-	19: 0
+    18: 0,
+    19: 0
 }
 
 dataset_train = POSSDataset(root=args.root, split='test', is_train=True, range_img_size=(args.range_y, args.range_x), if_aug='True',
@@ -148,6 +148,7 @@ model.to(device)
 
 model.load_state_dict(torch.load(save_path+str(args.eval_epoch)))
 
+print("Going to evaluate with these weights: ", save_path+str(args.eval_epoch))
 
 scale_x = np.expand_dims(
     np.ones([args.range_y, args.range_x])*50.0, axis=-1).astype(np.float32)

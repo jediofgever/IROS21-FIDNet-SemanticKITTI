@@ -1,7 +1,6 @@
 Dataset/semanticKITTI/*
 __pycache__
 */__pycache__
-save*/*
 *.ply
 Cylinder3D-master/*
 PC_cluster/depth_cluster/build/*

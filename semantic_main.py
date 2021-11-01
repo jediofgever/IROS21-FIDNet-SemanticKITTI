@@ -35,7 +35,7 @@ parser.add_argument('--if_range_mask', dest= "if_range_mask", default=True, help
 
 # network settings
 parser.add_argument('--backbone', dest= "backbone", default="ResNet34_point", help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest= "batch_size", default=2, help="bs")
+parser.add_argument('--batch_size', dest= "batch_size", default=8, help="bs")
 parser.add_argument('--if_BN', dest= "if_BN", default=True, help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest= "if_remission", default=True, help="if concatenate remmision in the input")
 parser.add_argument('--if_range', dest= "if_range", default=True, help="if concatenate range in the input")
@@ -44,9 +44,9 @@ parser.add_argument('--with_normal', dest= "with_normal", default=True, help="if
 
 
 # training settins
-parser.add_argument('--start_epoch',  dest= "start_epoch", default=0,help="0 or from the beginning, or from the middle")
+parser.add_argument('--start_epoch',  dest= "start_epoch", default=24,help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest= "lr_policy", default=1,help="lr_policy: 1, 2")
-parser.add_argument('--total_epoch',  dest= "total_epoch", default=26,help="total_epoch")
+parser.add_argument('--total_epoch',  dest= "total_epoch", default=50,help="total_epoch")
 parser.add_argument('--weight_WCE',  dest= "weight_WCE", default=1.0,help="weight_WCE")
 parser.add_argument('--weight_LS',  dest= "weight_LS", default=3.0,help="weight_LS")
 parser.add_argument('--top_k_percent_pixels',  dest= "top_k_percent_pixels", default=0.15,help="top_k_percent_pixels, hard mining")
@@ -92,7 +92,7 @@ else:
 
 data_loader_train = torch.utils.data.DataLoader(dataset_train,batch_size=args.batch_size,sampler=train_sampler,num_workers=2,shuffle=shuffle,pin_memory=True)
 
-print(len(data_loader_train))
+print("len(data_loader_train): ",len(data_loader_train))
 
 
 
@@ -107,7 +107,8 @@ if args.backbone=="ResNet34_aspp_2":
 
 
 if args.backbone=="ResNet34_point":
-	Backend=resnet34_point(if_BN=args.if_BN,if_remission=args.if_remission,if_range=args.if_range,with_normal=args.with_normal)
+	Backend=resnet34_point(
+if_BN=args.if_BN,if_remission=args.if_remission,if_range=args.if_range,with_normal=args.with_normal)
 	S_H=SemanticHead(20,1024)
 
 model=Final_Model(Backend,S_H)
@@ -153,16 +154,14 @@ for current_epoch in range(args.start_epoch,args.total_epoch):
 	if args.if_multi_gpus:
 		data_loader_train.sampler.set_epoch(current_epoch)
 	loss_per_epoch=0.0
-	if args.lr_policy==1:
-		learning_rate=get_lr_manually_1(current_epoch)
-	if args.lr_policy==2:
-		learning_rate=get_lr_manually_2(current_epoch)
-
+	#if args.lr_policy==1:
+		#learning_rate=get_lr_manually_1(current_epoch)
+	#if args.lr_policy==2:
+		#learning_rate=get_lr_manually_2(current_epoch)
+	learning_rate = 0.0008
 	optimizer.param_groups[0]['lr']=learning_rate
-	print ("lr=")
-	print (learning_rate)
-
-	print (save_path)
+	print ("lr= ", learning_rate)
+	print ("save_path= ", save_path)
 
 	for batch_ndx, (input_tensor,semantic_label,semantic_label_mask) in enumerate(data_loader_train):
 
@@ -200,10 +199,9 @@ for current_epoch in range(args.start_epoch,args.total_epoch):
 		#optimizer.step()
 		
 		if batch_ndx%100==0 and batch_ndx>0:
-			print (loss_per_epoch/batch_ndx)	
+			print ("loss_per_epoch/batch_ndx: ", loss_per_epoch/batch_ndx)	
 		if batch_ndx%1000==0 and batch_ndx>0:
-			print ("average loss for epoch "+str(current_epoch))
-			print (loss_per_epoch/batch_ndx)
+			print ("average loss for epoch "+str(current_epoch), loss_per_epoch/batch_ndx)
 
 	if args.if_multi_gpus:
 		if dist.get_rank()==0:

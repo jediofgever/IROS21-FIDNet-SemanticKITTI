@@ -84,6 +84,7 @@ learning_map = {
     11: 17,
     12: 21,
     13: 22,
+	18: 0
 }
 
 dataset_train = POSSDataset(root=args.root, split='test', is_train=True, range_img_size=(args.range_y, args.range_x), if_aug='True',
@@ -144,7 +145,7 @@ if args.if_KNN == 1:
     post_knn = KNN(knn_params, 20)
 
 
-all_seq_list = ['00']
+all_seq_list = ['04']
 
 
 if not os.path.exists("./method_predictions/"):

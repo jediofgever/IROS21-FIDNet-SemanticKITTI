@@ -66,6 +66,29 @@ parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
 
 args = parser.parse_args()
 
+
+inv_label_dict = {
+    0: 0,
+    1: 10,
+    2: 11,
+    3: 15,
+    4: 18,
+    5: 20,
+    6: 30,
+    7: 31,
+    8: 32,
+    9: 40,
+    10: 44,
+    11: 48,
+    12: 49,
+    13: 50,
+    14: 51,
+    15: 70,
+    16: 71,
+    17: 72,
+    18: 80,
+    19: 81}
+
 learning_map = {
     0: 0,
     1: 4,
@@ -84,7 +107,8 @@ learning_map = {
     11: 17,
     12: 21,
     13: 22,
-	18: 0
+	18: 0,
+	19: 0
 }
 
 dataset_train = POSSDataset(root=args.root, split='test', is_train=True, range_img_size=(args.range_y, args.range_x), if_aug='True',
@@ -145,7 +169,7 @@ if args.if_KNN == 1:
     post_knn = KNN(knn_params, 20)
 
 
-all_seq_list = ['04']
+all_seq_list = ['00']
 
 
 if not os.path.exists("./method_predictions/"):

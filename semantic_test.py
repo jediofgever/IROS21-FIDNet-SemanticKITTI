@@ -92,7 +92,7 @@ dataset_train = POSSDataset(root=args.root, split='test', is_train=True, range_i
                             if_range_mask=args.if_range_mask, if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
 
-save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/"
+save_path = "/home/fetulahatas1/IROS21-FIDNet-SemanticKITTI/save_semantic/"
 temp_path = args.backbone+"_"+str(args.range_x)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(
     args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(args.batch_size)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
 save_path = save_path+temp_path+"/"

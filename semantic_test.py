@@ -22,7 +22,7 @@ parser.add_argument('--dataset', dest="dataset",
                     default='POSSDataset', help='')
 parser.add_argument('--root',  dest="root", default='poss_data/',
                     help="poss_data/")
-parser.add_argument('--range_y', dest="range_y", default=128, help="128")
+parser.add_argument('--range_y', dest="range_y", default=64, help="128")
 parser.add_argument('--range_x', dest="range_x", default=2048, help="2048")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
 
@@ -88,7 +88,7 @@ learning_map = {
     19: 0
 }
 
-dataset_train = POSSDataset(root=args.root, split='test', is_train=True, range_img_size=(args.range_y, args.range_x), if_aug='True',
+dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_img_size=(args.range_y * 2, args.range_x), if_aug='True',
                             if_range_mask=args.if_range_mask, if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
 

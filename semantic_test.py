@@ -20,9 +20,9 @@ parser = argparse.ArgumentParser()
 # parameters for dataset
 parser.add_argument('--dataset', dest="dataset",
                     default='POSSDataset', help='')
-parser.add_argument('--root',  dest="root", default='/home/fetulahatas1/poss_data/',
-                    help="/home/fetulahatas1/poss_data/")
-parser.add_argument('--range_y', dest="range_y", default=64, help="128")
+parser.add_argument('--root',  dest="root", default='poss_data/',
+                    help="poss_data/")
+parser.add_argument('--range_y', dest="range_y", default=128, help="128")
 parser.add_argument('--range_x', dest="range_x", default=2048, help="2048")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
 

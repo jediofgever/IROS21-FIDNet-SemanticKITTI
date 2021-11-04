@@ -170,7 +170,7 @@ if args.if_KNN == 1:
     post_knn = KNN(knn_params, 20)
 
 
-all_seq_list = ['04']
+all_seq_list = ['07']
 
 
 if not os.path.exists("./method_predictions/"):

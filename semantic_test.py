@@ -22,7 +22,7 @@ parser.add_argument('--dataset', dest="dataset",
                     default='POSSDataset', help='')
 parser.add_argument('--root',  dest="root", default='poss_data/',
                     help="poss_data/")
-parser.add_argument('--range_y', dest="range_y", default=64, help="128")
+parser.add_argument('--range_y', dest="range_y", default=64, help="64")
 parser.add_argument('--range_x', dest="range_x", default=2048, help="2048")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
 
@@ -88,7 +88,7 @@ learning_map = {
     19: 0
 }
 
-dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_img_size=(args.range_y * 2, args.range_x), if_aug='True',
+dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_img_size=(args.range_y, args.range_x), if_aug='True',
                             if_range_mask=args.if_range_mask, if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
 
@@ -128,15 +128,15 @@ model.load_state_dict(torch.load(save_path+str(args.eval_epoch)))
 print("Going to evaluate with these weights: ", save_path+str(args.eval_epoch))
 
 scale_x = np.expand_dims(
-    np.ones([args.range_y * 2, args.range_x])*50.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y, args.range_x])*50.0, axis=-1).astype(np.float32)
 scale_y = np.expand_dims(
-    np.ones([args.range_y*2, args.range_x])*50.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y, args.range_x])*50.0, axis=-1).astype(np.float32)
 scale_z = np.expand_dims(
-    np.ones([args.range_y*2, args.range_x])*3.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y, args.range_x])*3.0, axis=-1).astype(np.float32)
 scale_matrx = np.concatenate([scale_x, scale_y, scale_z], axis=2)
 
 
-A = LaserScan(project=True, flip_sign=False, H=args.range_y*2,
+A = LaserScan(project=True, flip_sign=False, H=args.range_y,
               W=args.range_x, fov_up=20.0, fov_down=-25.0)
 
 model.eval()

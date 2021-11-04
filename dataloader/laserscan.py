@@ -163,6 +163,8 @@ class LaserScan:
     remission = self.remissions[order]
     proj_y = proj_y[order]
     proj_x = proj_x[order]
+    
+    proj_y[proj_y<0] = 0
 
     # assing to images
     self.proj_range[proj_y, proj_x] = depth

@@ -66,29 +66,6 @@ parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
 
 args = parser.parse_args()
 
-
-inv_label_dict = {
-    0: 0,
-    1: 10,
-    2: 11,
-    3: 15,
-    4: 18,
-    5: 20,
-    6: 30,
-    7: 31,
-    8: 32,
-    9: 40,
-    10: 44,
-    11: 48,
-    12: 49,
-    13: 50,
-    14: 51,
-    15: 70,
-    16: 71,
-    17: 72,
-    18: 80,
-    19: 81}
-
 learning_map = {
     0: 0,
     1: 4,

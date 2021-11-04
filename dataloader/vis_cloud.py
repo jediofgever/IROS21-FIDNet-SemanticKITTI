@@ -8,15 +8,14 @@ numpy.set_printoptions(threshold=sys.maxsize)
 
 if __name__ == "__main__":
 
-    lidarfile_path = "/home/atas/poss_data/test/07/velodyne/000000.bin"
+    lidarfile_path = "/home/atas/poss_data/test/07/velodyne/000500.bin"
     
     #gt_label_path = "/home/atas/poss_data/test/07/labels/000000.label"
-    #pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/04/predictions/000000.label"
+    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000500.label"
 
     points = read_data.read_points(lidarfile_path)
     
-    '''
-    labels = read_data.read_semlabels(gt_label_path)
+    #labels = read_data.read_semlabels(gt_label_path)
     pred_labels = read_data.read_semlabels(pred_label_path)
 
     gt_colors = []
@@ -25,15 +24,17 @@ if __name__ == "__main__":
     for i in pred_labels:
         pred_color.append(read_data.SEM_COLOR[i])
         
-    for i in labels:
-        gt_colors.append(read_data.SEM_COLOR[i])
-    '''
+    #for i in labels:
+    #    gt_colors.append(read_data.SEM_COLOR[i])
+    
+    print(len(np.asarray(points[:, 0:3])))
+    print(len(pred_labels))
+
     pcd= o3d.geometry.PointCloud()
     pcd.points= o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
     #pcd.colors= o3d.utility.Vector3dVector(np.asarray(gt_colors))
-    #pcd.colors= o3d.utility.Vector3dVector(np.asarray(pred_color))
+    pcd.colors= o3d.utility.Vector3dVector(np.asarray(pred_color))
     
-    print(np.asarray(points[:, 0:3]))
     o3d.visualization.draw_geometries([pcd])
 
     '''

@@ -218,6 +218,10 @@ for seq_name in all_seq_list:
             for jj in range(len(A.proj_x)):
                 y_range, x_range = A.proj_y[jj], A.proj_x[jj]
                 upper_half = 0
+                if y_range < 0:
+                    y_range = 0
+                if x_range < 0:
+                    x_range = 0
                 if A.unproj_range[jj] == A.proj_range[y_range, x_range]:
                     lower_half = learning_map[semantic_pred[y_range, x_range]]
                 else:

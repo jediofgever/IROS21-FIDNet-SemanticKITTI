@@ -128,16 +128,16 @@ model.load_state_dict(torch.load(save_path+str(args.eval_epoch)))
 print("Going to evaluate with these weights: ", save_path+str(args.eval_epoch))
 
 scale_x = np.expand_dims(
-    np.ones([args.range_y, args.range_x])*50.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y * 2, args.range_x])*50.0, axis=-1).astype(np.float32)
 scale_y = np.expand_dims(
-    np.ones([args.range_y, args.range_x])*50.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y*2, args.range_x])*50.0, axis=-1).astype(np.float32)
 scale_z = np.expand_dims(
-    np.ones([args.range_y, args.range_x])*3.0, axis=-1).astype(np.float32)
+    np.ones([args.range_y*2, args.range_x])*3.0, axis=-1).astype(np.float32)
 scale_matrx = np.concatenate([scale_x, scale_y, scale_z], axis=2)
 
 
-A = LaserScan(project=True, flip_sign=False, H=args.range_y,
-              W=args.range_x, fov_up=3.0, fov_down=-25.0)
+A = LaserScan(project=True, flip_sign=False, H=args.range_y*2,
+              W=args.range_x, fov_up=20.0, fov_down=-25.0)
 
 model.eval()
 

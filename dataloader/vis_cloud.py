@@ -8,10 +8,10 @@ numpy.set_printoptions(threshold=sys.maxsize)
 
 if __name__ == "__main__":
 
-    lidarfile_path = "/home/atas/poss_data/test/07/velodyne/000500.bin"
+    lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000300.bin"
     
     #gt_label_path = "/home/atas/poss_data/test/07/labels/000000.label"
-    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000500.label"
+    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000300.label"
 
     points = read_data.read_points(lidarfile_path)
     

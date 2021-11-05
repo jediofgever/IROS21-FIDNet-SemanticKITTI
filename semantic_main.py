@@ -15,36 +15,28 @@ from torch.utils.data import DataLoader, BatchSampler, RandomSampler
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-
-
-
-
 parser = argparse.ArgumentParser()
 #parameters for dataset
 parser.add_argument('--dataset',dest= "dataset", default='POSSDataset', help='')
-parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/poss_data/',help="/home/atas/poss_data/")
-parser.add_argument('--range_y', dest= "range_y", default=64, help="128")
-parser.add_argument('--range_x', dest= "range_x", default=2048, help="2048")
+parser.add_argument('--root',  dest= "root", default='/home/atas/poss_data/',help="/home/atas/poss_data/")
+parser.add_argument('--range_y', dest= "range_y", default=64, help="64")
+parser.add_argument('--range_x', dest= "range_x", default=512, help="512")
 parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val or trainval")
-
 
 # data_loader
 parser.add_argument('--if_aug', dest= "if_aug", default=True, help="if if_aug")
 parser.add_argument('--if_range_mask', dest= "if_range_mask", default=True, help="if if_range_mask")
 
-
 # network settings
 parser.add_argument('--backbone', dest= "backbone", default="ResNet34_point", help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest= "batch_size", default=8, help="bs")
+parser.add_argument('--batch_size', dest= "batch_size", default=2, help="bs")
 parser.add_argument('--if_BN', dest= "if_BN", default=True, help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest= "if_remission", default=True, help="if concatenate remmision in the input")
 parser.add_argument('--if_range', dest= "if_range", default=True, help="if concatenate range in the input")
 parser.add_argument('--with_normal', dest= "with_normal", default=True, help="if concatenate normal in the input")
 
-
-
 # training settins
-parser.add_argument('--start_epoch',  dest= "start_epoch", default=24,help="0 or from the beginning, or from the middle")
+parser.add_argument('--start_epoch',  dest= "start_epoch", default=0,help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest= "lr_policy", default=1,help="lr_policy: 1, 2")
 parser.add_argument('--total_epoch',  dest= "total_epoch", default=50,help="total_epoch")
 parser.add_argument('--weight_WCE',  dest= "weight_WCE", default=1.0,help="weight_WCE")
@@ -54,7 +46,6 @@ parser.add_argument('--BN_train',  dest= "BN_train", default=True,help="if BN_tr
 parser.add_argument('--if_mixture',  dest= "if_mixture", default=True,help="if_mixture training")
 
 # training mode
-
 parser.add_argument('--if_multi_gpus',	dest= "if_multi_gpus", default=False,help="if_multi-gpus training")
 parser.add_argument('--local_rank', default=-1,type=int)
 
@@ -104,7 +95,6 @@ if args.backbone=="ResNet34_aspp_1":
 if args.backbone=="ResNet34_aspp_2":
 	Backend=resnet34_aspp_2(if_BN=args.if_BN,if_remission=args.if_remission,if_range=args.if_range)
 	S_H=SemanticHead(20,128*13)
-
 
 if args.backbone=="ResNet34_point":
 	Backend=resnet34_point(
@@ -198,9 +188,9 @@ for current_epoch in range(args.start_epoch,args.total_epoch):
 		#total_loss.backward()
 		#optimizer.step()
 		
+		if batch_ndx%10==0 and batch_ndx>0:
+			print ("batch_ndx: ", batch_ndx, ", loss_per_epoch/batch_ndx: ", loss_per_epoch/batch_ndx)	
 		if batch_ndx%100==0 and batch_ndx>0:
-			print ("loss_per_epoch/batch_ndx: ", loss_per_epoch/batch_ndx)	
-		if batch_ndx%1000==0 and batch_ndx>0:
 			print ("average loss for epoch "+str(current_epoch), loss_per_epoch/batch_ndx)
 
 	if args.if_multi_gpus:

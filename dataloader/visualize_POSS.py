@@ -18,13 +18,13 @@ label_transfer_dict = CFG["learning_map"]
 nclasses = 14
 
 A = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
-                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
+                 project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 B = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
-                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
+                 project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 C = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
-                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
+                 project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 
-lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000500.bin"
+lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000300.bin"
 lidarfile_path_poss = "/home/atas/poss_data/train/00/velodyne/000000.bin"
 lidar_kitti = "/home/atas/17/velodyne/000000.bin"
 

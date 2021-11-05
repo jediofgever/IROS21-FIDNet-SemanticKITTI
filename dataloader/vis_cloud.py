@@ -29,23 +29,12 @@ if __name__ == "__main__":
     for i in labels:
         gt_colors.append(read_data.SEM_COLOR[i])
 
-    print(len(np.asarray(points[:, 0:3])))
-    print(np.unique(pred_labels))
-
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
     pcd.colors = o3d.utility.Vector3dVector(np.asarray(pred_color))
 
     pcd_poss = o3d.geometry.PointCloud()
-    pcd_poss.points = o3d.utility.Vector3dVector(
-        np.asarray(points_poss[:, 0:3]))
+    pcd_poss.points = o3d.utility.Vector3dVector(np.asarray(points_poss[:, 0:3]))
     pcd_poss.colors = o3d.utility.Vector3dVector(np.asarray(gt_colors))
 
-    o3d.visualization.draw_geometries([  pcd])
-
-    '''
-    # save z_norm as an image (change [0,1] range to [0,255] range with uint8 type)
-    img = o3d.geometry.Image((z_norm * 255).astype(np.uint8))
-    o3d.io.write_image("./sync.png", img)
-    o3d.visualization.draw_geometries([img])
-    '''
+    o3d.visualization.draw_geometries([pcd])

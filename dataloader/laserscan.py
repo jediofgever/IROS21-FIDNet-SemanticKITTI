@@ -6,7 +6,7 @@ class LaserScan:
   """Class that contains LaserScan with x,y,z,r"""
   EXTENSIONS_SCAN = ['.bin']
 
-  def __init__(self, project=False, flip_sign=True,H=64, W=1024, fov_up=3.0, fov_down=-25.0):
+  def __init__(self, project=False, flip_sign=True,H=64, W=512, fov_up=25.0, fov_down=-30.0):
     self.project = project
     self.proj_H = H
     self.proj_W = W
@@ -178,10 +178,11 @@ class SemLaserScan(LaserScan):
   """Class that contains LaserScan with x,y,z,r,sem_label,sem_color_label,inst_label,inst_color_label"""
   EXTENSIONS_LABEL = ['.label']
 
-  def __init__(self, nclasses, sem_color_dict=None, project=False, flip_sign=False, H=64, W=1024, fov_up=3.0, fov_down=-25.0):
+  def __init__(self, nclasses, sem_color_dict=None, project=False, flip_sign=False, H=64, W=512, fov_up=25.0, fov_down=-30.0):
     super(SemLaserScan, self).__init__(project, flip_sign,H, W, fov_up, fov_down)
     self.reset()
-    self.nclasses = nclasses         # number of classes
+    self.nclasses = nclasses         
+    # number of classes
 
     # make semantic colors
     max_sem_key = 0

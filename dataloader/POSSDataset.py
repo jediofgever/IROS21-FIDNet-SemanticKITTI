@@ -20,7 +20,7 @@ class POSSDataset(data.Dataset):
                  root="/home/atas/poss_data/",
                  split="train",
                  is_train=True,
-                 range_img_size=(128, 2048),
+                 range_img_size=(64, 512),
                  if_aug=True,
                  if_range_mask=True,
                  if_remission=True,
@@ -55,7 +55,8 @@ class POSSDataset(data.Dataset):
         self.nclasses = 14
 
         self.A = SemLaserScan(nclasses=self.nclasses, sem_color_dict=self.color_dict, project=True,
-                              flip_sign=self.flip_sign, H=self.range_h, W=self.range_w, fov_up=3.0, fov_down=-25.0)
+                              flip_sign=self.flip_sign, H=self.range_h, W=self.range_w,
+                              fov_up=25.0, fov_down=-30.0)
 
         if self.split == 'train' or self.split == 'val' or self.split == 'test':
             self.lidar_list = glob.glob(root+self.split+'/*/*/*.bin')
@@ -68,8 +69,8 @@ class POSSDataset(data.Dataset):
         print(len(self.label_list))
 
         if self.with_normal:
-            fov_up = 3.0
-            fov_down = -25.0
+            fov_up = 25.0
+            fov_down = -30.0
             self.fov_up = fov_up
             self.fov_down = fov_down
             fov_up = fov_up / 180.0 * np.pi      # field of view up in rad

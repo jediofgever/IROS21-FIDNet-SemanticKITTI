@@ -11,21 +11,30 @@ import yaml
 root = '/home/atas/poss_data/'
 split = 'test'
 
-lidar_list = sorted(glob.glob(root+split+'/*/*/*.bin'))
-label_list = [i.replace("velodyne", "labels") for i in lidar_list]
-label_list = [i.replace("bin", "label") for i in label_list]
-
 CFG = yaml.safe_load(open(root+'poss.yaml', 'r'))
-print(lidar_list[0])
+
 color_dict = CFG["color_map"]
 label_transfer_dict = CFG["learning_map"]
 nclasses = 14
 
 A = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
-                 project=True, H=128, W=2048, fov_up=20.0, fov_down=-25.0)
+                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
+B = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
+                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
+C = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
+                 project=True, H=64, W=512, fov_up=10.0, fov_down=-35.0)
 
-#for a in lidar_list:
-A.open_scan(lidar_list[500])
-#plt.imshow(A.proj_range)
-plt.imshow(A.proj_range)
-plt.pause(10)
+lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000500.bin"
+lidarfile_path_poss = "/home/atas/poss_data/train/00/velodyne/000000.bin"
+lidar_kitti = "/home/atas/17/velodyne/000000.bin"
+
+A.open_scan(lidarfile_path)
+B.open_scan(lidarfile_path_poss)
+C.open_scan(lidar_kitti)
+
+f, axarr = plt.subplots(3,1) 
+axarr[0].imshow(A.proj_range)
+axarr[1].imshow(B.proj_range)
+axarr[2].imshow(C.proj_range)
+
+plt.show()

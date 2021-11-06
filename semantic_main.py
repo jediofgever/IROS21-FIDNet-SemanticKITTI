@@ -38,7 +38,7 @@ parser.add_argument('--with_normal', dest= "with_normal", default=True, help="if
 # training settins
 parser.add_argument('--start_epoch',  dest= "start_epoch", default=0,help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest= "lr_policy", default=1,help="lr_policy: 1, 2")
-parser.add_argument('--total_epoch',  dest= "total_epoch", default=50,help="total_epoch")
+parser.add_argument('--total_epoch',  dest= "total_epoch", default=100,help="total_epoch")
 parser.add_argument('--weight_WCE',  dest= "weight_WCE", default=1.0,help="weight_WCE")
 parser.add_argument('--weight_LS',  dest= "weight_LS", default=3.0,help="weight_LS")
 parser.add_argument('--top_k_percent_pixels',  dest= "top_k_percent_pixels", default=0.15,help="top_k_percent_pixels, hard mining")
@@ -68,10 +68,7 @@ save_path=save_path+temp_path+"/"
 if not(os.path.exists(save_path)):
 	os.mkdir(save_path)
 
-
-
 dataset_train=POSSDataset(root=args.root,split=args.code_mode,is_train=True, range_img_size=(args.range_y,args.range_x),if_aug=args.if_aug, if_range_mask=args.if_range_mask,if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
-
 
 if args.if_multi_gpus:
 	train_sampler=torch.utils.data.distributed.DistributedSampler(dataset=dataset_train,drop_last=True)
@@ -80,13 +77,7 @@ else:
 	train_sampler=RandomSampler(dataset_train)
 	shuffle=False
 
-
 data_loader_train = torch.utils.data.DataLoader(dataset_train,batch_size=args.batch_size,sampler=train_sampler,num_workers=2,shuffle=shuffle,pin_memory=True)
-
-print("len(data_loader_train): ",len(data_loader_train))
-
-
-
 
 if args.backbone=="ResNet34_aspp_1":
 	Backend=resnet34_aspp_1(if_BN=args.if_BN,if_remission=args.if_remission,if_range=args.if_range)
@@ -103,8 +94,8 @@ if_BN=args.if_BN,if_remission=args.if_remission,if_range=args.if_range,with_norm
 
 model=Final_Model(Backend,S_H)
 
-#if args.start_epoch>0:
-#        model.load_state_dict(torch.load(save_path+str(args.start_epoch-1)))
+if args.start_epoch>0:
+    model.load_state_dict(torch.load(save_path+str(args.start_epoch-1)))
 
 if args.if_multi_gpus:
 	model=torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)

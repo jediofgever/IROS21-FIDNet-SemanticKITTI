@@ -27,7 +27,6 @@ class POSSDataset(data.Dataset):
                  if_range=True,
                  flip_sign=True,
                  with_normal=True
-
                  ):
 
         # root= ./Dataset/semanticKITTI/
@@ -37,18 +36,14 @@ class POSSDataset(data.Dataset):
         self.is_train = is_train
 
         self.range_h, self.range_w = range_img_size
-
         self.if_aug = if_aug
         self.if_range_mask = if_range_mask
         self.if_remission = if_remission
         self.if_range = if_range
         self.flip_sign = flip_sign
         self.with_normal = with_normal
-
         self.CFG = yaml.safe_load(open(root+'poss.yaml', 'r'))
-
         self.color_dict = self.CFG["color_map"]
-
         self.label_transfer_dict = self.CFG["learning_map"]
 
         #self.nclasses = len(self.color_dict)
@@ -175,7 +170,7 @@ class POSSDataset(data.Dataset):
             input_tensor = np.concatenate(
                 [input_tensor, sample['normal_image'].astype(np.float32)], axis=-1)
 
-        # plt.imsave('./hhh.jpg',(normal_image+1.0)/2.0)
+            #plt.imsave('./hhh.jpg',(sample['normal_image'].astype(np.float32))/255.0)
 
         '''
         random_mask=np.random.randint(20, size=(self.range_h, self.range_w))

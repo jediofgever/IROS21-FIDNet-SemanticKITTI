@@ -23,14 +23,14 @@ parser.add_argument('--dataset', dest="dataset",
 parser.add_argument('--root',  dest="root", default='poss_data/',
                     help="poss_data/")
 parser.add_argument('--range_y', dest="range_y", default=64, help="64")
-parser.add_argument('--range_x', dest="range_x", default=2048, help="2048")
+parser.add_argument('--range_x', dest="range_x", default=512, help="512")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
 
 
 # network settings
 parser.add_argument('--backbone', dest="backbone", default="ResNet34_point",
                     help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest="batch_size", default=8, help="bs")
+parser.add_argument('--batch_size', dest="batch_size", default=1, help="bs")
 parser.add_argument('--if_BN', dest="if_BN", default=True,
                     help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest="if_remission",
@@ -44,7 +44,7 @@ parser.add_argument('--with_normal', dest="with_normal",
 
 
 # training settins
-parser.add_argument('--eval_epoch',  dest="eval_epoch", default=49,
+parser.add_argument('--eval_epoch',  dest="eval_epoch", default=25,
                     help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest="lr_policy",
                     default=1, help="lr_policy: 1, 2 or 0")
@@ -58,45 +58,42 @@ parser.add_argument('--BN_train',  dest="BN_train", default=True,
                     help="if BN_train, false when batch_size is small")
 parser.add_argument('--if_mixture',  dest="if_mixture",
                     default=True, help="if_mixture training")
-
-
-parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
+parser.add_argument('--if_KNN',  dest="if_KNN", default=0,
                     help="0: no post; 1: original_knn; 2: our post")
-
 
 args = parser.parse_args()
 
 learning_map = {
-    0: 0,
-    1: 4,
-    1: 5,
-    2: 6,
-    3: 7,
-    4: 8,
-    5: 9,
-    6: 10,
-    6: 11,
-    6: 12,
-    7: 13,
-    8: 14,
-    9: 15,
-    10: 16,
-    11: 17,
-    12: 21,
-    13: 22,
-    18: 0,
-    19: 0
+    0: 0,  #unlabel
+    1: 7,  #car 
+    2: 21, #bike
+    3: 21, #motocycle -> bike
+    4: 7,  #truck - > car
+    5: 7,  # other vehicle - > car
+    6: 4,  # person 
+    7: 21, # biker -> bike 
+    8: 21, # motocylist -> bike 
+    9: 22, # road - > ground
+    10: 22, # parking ->ground
+    11: 22, # sidewalk -> ground
+    12: 22, # other ground -> ground
+    13: 15, # building
+    14: 17,  # fence
+    15: 9,   # plants, vegetation
+    16: 8,   # trunk
+    17: 22,   # ground/terrain
+    18: 13,   # pole
+    19: 10    # traffic sign
 }
 
 dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_img_size=(args.range_y, args.range_x), if_aug='True',
                             if_range_mask=args.if_range_mask, if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
-
-save_path = "/home/fetulahatas1/IROS21-FIDNet-SemanticKITTI/save_semantic/"
+save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/"
 temp_path = args.backbone+"_"+str(args.range_x)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(
-    args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(args.batch_size)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
-save_path = save_path+temp_path+"/"
-
+    args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(32)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
+#save_path = save_path+temp_path+"/"
+save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/kitti/"
 
 if args.backbone == "ResNet34_aspp_1":
     Backend = resnet34_aspp_1(
@@ -108,20 +105,15 @@ if args.backbone == "ResNet34_aspp_2":
         if_BN=args.if_BN, if_remission=args.if_remission, if_range=args.if_range)
     S_H = SemanticHead(20, 128*13)
 
-
 if args.backbone == "ResNet34_point":
     Backend = resnet34_point(if_BN=args.if_BN, if_remission=args.if_remission,
                              if_range=args.if_range, with_normal=args.with_normal)
     S_H = SemanticHead(20, 1024)
 
-
 model = Final_Model(Backend, S_H)
-
 device = torch.device('cuda:{}'.format(0))
 
-
 model.to(device)
-
 
 model.load_state_dict(torch.load(save_path+str(args.eval_epoch)))
 
@@ -146,9 +138,7 @@ if args.if_KNN == 1:
     knn_params = {'knn': 5, 'search': 5, 'sigma': 1.0, 'cutoff': 1.0}
     post_knn = KNN(knn_params, 20)
 
-
 all_seq_list = ['07']
-
 
 if not os.path.exists("./method_predictions/"):
     os.mkdir("./method_predictions/")
@@ -251,6 +241,10 @@ for seq_name in all_seq_list:
             for jj in range(len(A.proj_x)):
                 y_range, x_range = A.proj_y[jj], A.proj_x[jj]
                 upper_half = 0
+                if y_range < 0:
+                    y_range = 0
+                if x_range < 0:
+                    x_range = 0
                 lower_half = learning_map[semantic_pred[y_range, x_range]]
                 label_each = (upper_half << 16) + lower_half
                 label.append(label_each)

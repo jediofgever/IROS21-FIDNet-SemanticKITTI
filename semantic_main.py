@@ -36,7 +36,7 @@ parser.add_argument('--if_range', dest= "if_range", default=True, help="if conca
 parser.add_argument('--with_normal', dest= "with_normal", default=True, help="if concatenate normal in the input")
 
 # training settins
-parser.add_argument('--start_epoch',  dest= "start_epoch", default=0,help="0 or from the beginning, or from the middle")
+parser.add_argument('--start_epoch',  dest= "start_epoch", default=26,help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest= "lr_policy", default=1,help="lr_policy: 1, 2")
 parser.add_argument('--total_epoch',  dest= "total_epoch", default=100,help="total_epoch")
 parser.add_argument('--weight_WCE',  dest= "weight_WCE", default=1.0,help="weight_WCE")

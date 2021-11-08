@@ -17,7 +17,7 @@ import cv2
 class POSSDataset(data.Dataset):
 
     def __init__(self,
-                 root="/home/atas/poss_data/",
+                 root="/home/fetulahatas1/SemanticUSL/",
                  split="train",
                  is_train=True,
                  range_img_size=(64, 512),
@@ -42,12 +42,12 @@ class POSSDataset(data.Dataset):
         self.if_range = if_range
         self.flip_sign = flip_sign
         self.with_normal = with_normal
-        self.CFG = yaml.safe_load(open(root+'poss.yaml', 'r'))
+        self.CFG = yaml.safe_load(open(root+'semantickitti19.yaml', 'r'))
         self.color_dict = self.CFG["color_map"]
         self.label_transfer_dict = self.CFG["learning_map"]
 
-        #self.nclasses = len(self.color_dict)
-        self.nclasses = 14
+        self.nclasses = len(self.color_dict)
+        #self.nclasses = 14
 
         self.A = SemLaserScan(nclasses=self.nclasses, sem_color_dict=self.color_dict, project=True,
                               flip_sign=self.flip_sign, H=self.range_h, W=self.range_w,

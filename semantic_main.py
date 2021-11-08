@@ -17,8 +17,8 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 
 parser = argparse.ArgumentParser()
 #parameters for dataset
-parser.add_argument('--dataset',dest= "dataset", default='POSSDataset', help='')
-parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/poss_data/',help="/home/atas/poss_data/")
+parser.add_argument('--dataset',dest= "dataset", default='SemanticUSL', help='')
+parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/SemanticUSL/',help="/home/atas/poss_data/")
 parser.add_argument('--range_y', dest= "range_y", default=64, help="64")
 parser.add_argument('--range_x', dest= "range_x", default=512, help="512")
 parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val or trainval")
@@ -36,7 +36,7 @@ parser.add_argument('--if_range', dest= "if_range", default=True, help="if conca
 parser.add_argument('--with_normal', dest= "with_normal", default=True, help="if concatenate normal in the input")
 
 # training settins
-parser.add_argument('--start_epoch',  dest= "start_epoch", default=26,help="0 or from the beginning, or from the middle")
+parser.add_argument('--start_epoch',  dest= "start_epoch", default=0,help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest= "lr_policy", default=1,help="lr_policy: 1, 2")
 parser.add_argument('--total_epoch',  dest= "total_epoch", default=100,help="total_epoch")
 parser.add_argument('--weight_WCE',  dest= "weight_WCE", default=1.0,help="weight_WCE")

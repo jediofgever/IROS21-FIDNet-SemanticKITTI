@@ -9,12 +9,12 @@ numpy.set_printoptions(threshold=sys.maxsize)
 
 if __name__ == "__main__":
 
-    CFG = yaml.safe_load(open('../poss_data/semantickitti19.yaml', 'r'))
+    CFG = yaml.safe_load(open('../container_office/semantickitti19.yaml', 'r'))
 
     color_dict = CFG["color_map"]
 
-    lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/70/velodyne/000108.bin"
-    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/70/predictions/000108.label"
+    lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/test/07/velodyne/000480.bin"
+    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000480.label"
 
     #lidarfile_path_poss = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/04/velodyne/000002.bin"
     #gt_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/04/predictions/000002.label"
@@ -45,7 +45,6 @@ if __name__ == "__main__":
     #pcd_poss.points = o3d.utility.Vector3dVector(np.asarray(points_poss[:, 0:3]))
     #pcd_poss.colors = o3d.utility.Vector3dVector(np.asarray(gt_colors))
 
- 
     vis = o3d.visualization.Visualizer()
     vis.create_window()
     vis.add_geometry(pcd)

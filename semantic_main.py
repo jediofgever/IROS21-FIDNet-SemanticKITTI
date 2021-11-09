@@ -18,7 +18,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 parser = argparse.ArgumentParser()
 #parameters for dataset
 parser.add_argument('--dataset',dest= "dataset", default='SemanticUSL', help='')
-parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/SemanticUSL/',help="/home/atas/poss_data/")
+parser.add_argument('--root',  dest= "root", default='/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/',help="/home/atas/poss_data/")
 parser.add_argument('--range_y', dest= "range_y", default=64, help="64")
 parser.add_argument('--range_x', dest= "range_x", default=512, help="512")
 parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val or trainval")
@@ -29,7 +29,7 @@ parser.add_argument('--if_range_mask', dest= "if_range_mask", default=True, help
 
 # network settings
 parser.add_argument('--backbone', dest= "backbone", default="ResNet34_point", help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest= "batch_size", default=32, help="bs")
+parser.add_argument('--batch_size', dest= "batch_size", default=3, help="bs")
 parser.add_argument('--if_BN', dest= "if_BN", default=True, help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest= "if_remission", default=True, help="if concatenate remmision in the input")
 parser.add_argument('--if_range', dest= "if_range", default=True, help="if concatenate range in the input")

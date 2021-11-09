@@ -17,7 +17,7 @@ import cv2
 class POSSDataset(data.Dataset):
 
     def __init__(self,
-                 root="/home/fetulahatas1/SemanticUSL/",
+                 root="/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/",
                  split="train",
                  is_train=True,
                  range_img_size=(64, 512),

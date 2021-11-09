@@ -8,10 +8,12 @@ import matplotlib.pyplot as plt
 from laserscan import SemLaserScan, LaserScan
 import yaml
 
+from read_data import read_semlabels
+
 root = '/home/atas/poss_data/'
 split = 'test'
 
-CFG = yaml.safe_load(open(root+'poss.yaml', 'r'))
+CFG = yaml.safe_load(open('/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/semantickitti19.yaml', 'r'))
 
 color_dict = CFG["color_map"]
 label_transfer_dict = CFG["learning_map"]
@@ -21,24 +23,20 @@ A = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
                  project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 B = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
                  project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
-C = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
-                 project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 
-lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000300.bin"
-lidarfile_path_pred = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000300.label"
+con_office_lidar = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000308.bin"
+con_office_lidar_label = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/labels/000308.label"
 
-lidarfile_path_poss = "/home/atas/poss_data/train/00/velodyne/000000.bin"
-lidar_kitti = "/home/atas/17/velodyne/000000.bin"
+labl = read_semlabels(con_office_lidar_label)
 
-A.open_scan(lidarfile_path)
-A.open_label(lidarfile_path_pred)
-B.open_scan(lidarfile_path_poss)
-C.open_scan(lidar_kitti)
+print(np.unique(labl))
 
-f, axarr = plt.subplots(4,1) 
+A.open_scan(con_office_lidar)
+A.open_label(con_office_lidar_label)
+
+ 
+f, axarr = plt.subplots(2,1) 
 axarr[0].imshow(A.proj_range)
 axarr[1].imshow(A.proj_sem_color)
-axarr[2].imshow(B.proj_range)
-axarr[3].imshow(C.proj_range)
 
 plt.show()

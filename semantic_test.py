@@ -20,8 +20,7 @@ parser = argparse.ArgumentParser()
 # parameters for dataset
 parser.add_argument('--dataset', dest="dataset",
                     default='POSSDataset', help='')
-parser.add_argument('--root',  dest="root", default='poss_data/',
-                    help="poss_data/")
+parser.add_argument('--root',  dest="root", default='poss_data/', help="poss_data/")
 parser.add_argument('--range_y', dest="range_y", default=64, help="64")
 parser.add_argument('--range_x', dest="range_x", default=512, help="512")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
@@ -44,7 +43,7 @@ parser.add_argument('--with_normal', dest="with_normal",
 
 
 # training settins
-parser.add_argument('--eval_epoch',  dest="eval_epoch", default=25,
+parser.add_argument('--eval_epoch',  dest="eval_epoch", default=98,
                     help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest="lr_policy",
                     default=1, help="lr_policy: 1, 2 or 0")
@@ -58,42 +57,65 @@ parser.add_argument('--BN_train',  dest="BN_train", default=True,
                     help="if BN_train, false when batch_size is small")
 parser.add_argument('--if_mixture',  dest="if_mixture",
                     default=True, help="if_mixture training")
-parser.add_argument('--if_KNN',  dest="if_KNN", default=0,
+parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
                     help="0: no post; 1: original_knn; 2: our post")
 
 args = parser.parse_args()
 
 learning_map = {
-    0: 0,  #unlabel
-    1: 7,  #car 
-    2: 21, #bike
-    3: 21, #motocycle -> bike
-    4: 7,  #truck - > car
-    5: 7,  # other vehicle - > car
-    6: 4,  # person 
-    7: 21, # biker -> bike 
-    8: 21, # motocylist -> bike 
-    9: 22, # road - > ground
-    10: 22, # parking ->ground
-    11: 22, # sidewalk -> ground
-    12: 22, # other ground -> ground
-    13: 15, # building
-    14: 17,  # fence
-    15: 9,   # plants, vegetation
-    16: 8,   # trunk
+    0: 0,     # unlabel
+    1: 7,     # car 
+    2: 21,    # bike
+    3: 21,    # motocycle -> bike
+    4: 7,     # truck - > car
+    5: 7,     # other vehicle - > car
+    6: 4,     # person 
+    7: 21,    # biker -> bike 
+    8: 21,    # motocylist -> bike 
+    9: 22,    # road - > ground
+    10: 22,   # parking ->ground
+    11: 22,   # sidewalk -> ground
+    12: 22,   # other ground -> ground
+    13: 15,   # building
+    14: 17,   # fence
+    15: 9,    # plants, vegetation
+    16: 8,    # trunk
     17: 22,   # ground/terrain
     18: 13,   # pole
     19: 10    # traffic sign
+}
+
+learning_map_inv ={ # inverse of previous map
+  0: 0 ,     # "unlabeled", and others ignored
+  1: 10,     # "car"
+  2: 11,     # "bicycle"
+  3: 15,     # "motorcycle"
+  4: 18,     # "truck"
+  5: 20,     # "other-vehicle"
+  6: 30,     # "person"
+  7: 31,     # "bicyclist"
+  8: 32,     # "motorcyclist"
+  9: 40,     # "road"
+  10: 44,    # "parking"
+  11: 48,   # "sidewalk"
+  12: 49,    # "other-ground"
+  13: 50,    # "building"
+  14: 51,    # "fence"
+  15: 70,    # "vegetation"
+  16: 71,    # "trunk"
+  17: 72,    # "terrain"
+  18: 80,    # "pole"
+  19: 81    # "traffic-sign"
 }
 
 dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_img_size=(args.range_y, args.range_x), if_aug='True',
                             if_range_mask=args.if_range_mask, if_remission=args.if_remission, if_range=args.if_range, with_normal=args.with_normal)
 
 save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/"
-temp_path = args.backbone+"_"+str(args.range_x)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(
+temp_path = args.backbone+"_"+str(512)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(
     args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(32)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
-#save_path = save_path+temp_path+"/"
-save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/kitti/"
+save_path = save_path+temp_path+"/"
+#save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/kitti/"
 
 if args.backbone == "ResNet34_aspp_1":
     Backend = resnet34_aspp_1(
@@ -138,7 +160,7 @@ if args.if_KNN == 1:
     knn_params = {'knn': 5, 'search': 5, 'sigma': 1.0, 'cutoff': 1.0}
     post_knn = KNN(knn_params, 20)
 
-all_seq_list = ['07']
+all_seq_list = ['70']
 
 if not os.path.exists("./method_predictions/"):
     os.mkdir("./method_predictions/")
@@ -213,13 +235,13 @@ for seq_name in all_seq_list:
                 if x_range < 0:
                     x_range = 0
                 if A.unproj_range[jj] == A.proj_range[y_range, x_range]:
-                    lower_half = learning_map[semantic_pred[y_range, x_range]]
+                    lower_half = learning_map_inv[semantic_pred[y_range, x_range]]
                 else:
                     potential_label = proj_unfold_pre[0, :, y_range, x_range]
                     potential_range = proj_unfold_range[0, :, y_range, x_range]
                     min_arg = np.argmin(
                         abs(potential_range-A.unproj_range[jj]))
-                    lower_half = learning_map[potential_label[min_arg]]
+                    lower_half = learning_map_inv[potential_label[min_arg]]
                 label_each = (upper_half << 16) + lower_half
                 label.append(label_each)
 
@@ -231,7 +253,7 @@ for seq_name in all_seq_list:
             label = []
             for i in unproj_argmax:
                 upper_half = 0
-                lower_half = learning_map[i.item()]
+                lower_half = learning_map_inv[i.item()]
                 label_each = (upper_half << 16) + lower_half
                 label.append(label_each)
 
@@ -245,7 +267,7 @@ for seq_name in all_seq_list:
                     y_range = 0
                 if x_range < 0:
                     x_range = 0
-                lower_half = learning_map[semantic_pred[y_range, x_range]]
+                lower_half = learning_map_inv[semantic_pred[y_range, x_range]]
                 label_each = (upper_half << 16) + lower_half
                 label.append(label_each)
 

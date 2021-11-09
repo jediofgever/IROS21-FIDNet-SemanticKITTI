@@ -18,7 +18,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 parser = argparse.ArgumentParser()
 #parameters for dataset
 parser.add_argument('--dataset',dest= "dataset", default='SemanticUSL', help='')
-parser.add_argument('--root',  dest= "root", default='/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/',help="/home/atas/poss_data/")
+parser.add_argument('--root',  dest= "root", default='/home/fetulahatas1/IROS21-FIDNet-SemanticKITTI/container_office/',help="/home/atas/poss_data/")
 parser.add_argument('--range_y', dest= "range_y", default=64, help="64")
 parser.add_argument('--range_x', dest= "range_x", default=512, help="512")
 parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val or trainval")

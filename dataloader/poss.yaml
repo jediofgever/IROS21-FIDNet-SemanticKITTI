@@ -18,23 +18,25 @@ labels:
   21: "bike"
   22: "ground"
 color_map: # bgr
-  0: [0, 0, 0]
-  4: [0, 0, 255]
-  5: [245, 150, 100]
-  6: [245, 230, 100]
-  7: [250, 80, 100]
-  8: [150, 60, 30]
-  9: [255, 0, 0]
-  10: [180, 30, 80]
-  11: [255, 0, 0]
-  12: [30, 30, 255]
-  13: [200, 40, 255]
-  14: [90, 30, 150]
-  15: [255, 0, 255]
-  16: [255, 150, 255]
-  17: [75, 0, 75]
-  21: [75, 0, 175]
-  22: [0, 200, 255]
+  0: [0, 0, 0]          # unlabeled
+  4: [30, 30, 255]      # people
+  5: [30, 30, 2550]     # people
+  6: [245, 230, 100]    # rider
+  7: [245, 150, 100]    # car
+  8: [150, 60, 30]      # trunk
+  9: [0, 175, 0]        # plants
+  10: [0, 175, 0]       # plants
+  11: [255, 0, 0]       # traffic
+  12: [30, 30, 255]     # traffic
+  13: [200, 40, 255]    # pole
+  14: [90, 30, 150]     # trash-can
+  15: [0, 200, 255]     # building
+  16: [255, 150, 255]   # stone
+  17: [75, 0, 75]       # fence
+  19: [0, 0, 0]         # no
+  20: [0, 0, 0]         # no
+  21: [75, 0, 175]      # bike
+  22: [255, 150, 255]   # ground
 # classes that are indistinguishable from single scan or inconsistent in
 # ground truth are mapped to their closest equivalent
 learning_map:

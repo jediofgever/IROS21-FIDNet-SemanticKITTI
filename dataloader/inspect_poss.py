@@ -10,19 +10,20 @@ numpy.set_printoptions(threshold=sys.maxsize)
 if __name__ == "__main__":
 
     CFG = yaml.safe_load(
-        open('/home/atas/mixed_data/semantickitti19.yaml', 'r'))
+        open('/home/atas/IROS21-FIDNet-SemanticKITTI/dataloader/poss.yaml', 'r'))
 
     color_dict = CFG["color_map"]
 
-    lidarfile_path = "/home/atas/mixed_data/test/07/velodyne/000460.bin"
-    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000460.label"
-    pred_label_path = "/home/atas/mixed_data/test/07/labels/000460.label"
+    lidarfile_path = "/home/atas/poss_dataset/sequences/00/velodyne/000460.bin"
+    pred_label_path = "/home/atas/poss_dataset/sequences/00/labels/000460.label"
 
     points = read_data.read_points(lidarfile_path)
     pred_labels = read_data.read_semlabels(pred_label_path)
 
     pred_color = []
 
+    print(np.unique(pred_labels))
+ 
     for i in pred_labels:
         pred_color.append(color_dict[i])
 

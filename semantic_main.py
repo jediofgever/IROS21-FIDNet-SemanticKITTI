@@ -29,7 +29,7 @@ parser.add_argument('--if_range_mask', dest= "if_range_mask", default=True, help
 
 # network settings
 parser.add_argument('--backbone', dest= "backbone", default="ResNet34_point", help="ResNet34_aspp_1,ResNet34_aspp_2,ResNet_34_point")
-parser.add_argument('--batch_size', dest= "batch_size", default=3, help="bs")
+parser.add_argument('--batch_size', dest= "batch_size", default=8, help="bs")
 parser.add_argument('--if_BN', dest= "if_BN", default=True, help="if use BN in the backbone net")
 parser.add_argument('--if_remission', dest= "if_remission", default=True, help="if concatenate remmision in the input")
 parser.add_argument('--if_range', dest= "if_range", default=True, help="if concatenate range in the input")

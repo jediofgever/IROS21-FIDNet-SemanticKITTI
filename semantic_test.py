@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', dest="dataset",
                     default='POSSDataset', help='')
 parser.add_argument('--root',  dest="root",
-                    default='/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/', help="poss_data/")
+                    default='/home/atas/mixed_data/', help="poss_data/")
 parser.add_argument('--range_y', dest="range_y", default=64, help="64")
 parser.add_argument('--range_x', dest="range_x", default=512, help="512")
 #parser.add_argument('--code_mode', dest= "code_mode", default="train", help="train or val")
@@ -114,7 +114,7 @@ dataset_train = POSSDataset(root=args.root, split='test', is_train=False, range_
 
 save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/"
 temp_path = args.backbone+"_"+str(args.range_x)+"_"+str(args.range_y)+"_BN"+str(args.if_BN)+"_remission"+str(args.if_remission)+"_range"+str(args.if_range)+"_normal"+str(
-    args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(8)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
+    args.with_normal)+"_rangemask"+str(args.if_range_mask)+"_"+str(32)+"_"+str(args.weight_WCE)+"_"+str(args.weight_LS)+"_lr"+str(args.lr_policy)+"_top_k"+str(args.top_k_percent_pixels)
 save_path = save_path+temp_path+"/"
 #save_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/save_semantic/kitti/"
 

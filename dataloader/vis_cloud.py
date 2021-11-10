@@ -9,41 +9,26 @@ numpy.set_printoptions(threshold=sys.maxsize)
 
 if __name__ == "__main__":
 
-    CFG = yaml.safe_load(open('../container_office/semantickitti19.yaml', 'r'))
+    CFG = yaml.safe_load(
+        open('/home/atas/mixed_data/semantickitti19.yaml', 'r'))
 
     color_dict = CFG["color_map"]
 
-    lidarfile_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/container_office/test/07/velodyne/000480.bin"
-    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000480.label"
-
-    #lidarfile_path_poss = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/04/velodyne/000002.bin"
-    #gt_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/04/predictions/000002.label"
+    lidarfile_path = "/home/atas/mixed_data/train/00/velodyne/000000.bin"
+    #pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000460.label"
+    pred_label_path = "/home/atas/mixed_data/train/00/labels/000000.label"
 
     points = read_data.read_points(lidarfile_path)
-    #points_poss = read_data.read_points(lidarfile_path_poss)
-
     pred_labels = read_data.read_semlabels(pred_label_path)
-    #labels = read_data.read_semlabels(gt_label_path)
 
     pred_color = []
-    gt_colors = []
 
     for i in pred_labels:
         pred_color.append(color_dict[i])
 
-    # for i in labels:
-    #    gt_colors.append(read_data.SEM_COLOR[i])
-
-    print(len(pred_labels))
-    print(len(points))
-
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
-    pcd.colors = o3d.utility.Vector3dVector(np.asarray(pred_color))
-
-    pcd_poss = o3d.geometry.PointCloud()
-    #pcd_poss.points = o3d.utility.Vector3dVector(np.asarray(points_poss[:, 0:3]))
-    #pcd_poss.colors = o3d.utility.Vector3dVector(np.asarray(gt_colors))
+    pcd.colors = o3d.utility.Vector3dVector(np.asarray(pred_color) / 255.0)
 
     vis = o3d.visualization.Visualizer()
     vis.create_window()

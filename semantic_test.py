@@ -44,7 +44,7 @@ parser.add_argument('--with_normal', dest="with_normal",
 
 
 # training settins
-parser.add_argument('--eval_epoch',  dest="eval_epoch", default=99,
+parser.add_argument('--eval_epoch',  dest="eval_epoch", default=299,
                     help="0 or from the beginning, or from the middle")
 parser.add_argument('--lr_policy',  dest="lr_policy",
                     default=1, help="lr_policy: 1, 2 or 0")

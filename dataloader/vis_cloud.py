@@ -14,9 +14,9 @@ if __name__ == "__main__":
 
     color_dict = CFG["color_map"]
 
-    lidarfile_path = "/home/atas/mixed_data/test/07/velodyne/000460.bin"
-    pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000460.label"
-    pred_label_path = "/home/atas/mixed_data/test/07/labels/000460.label"
+    lidarfile_path = "/home/atas/mixed_data/train/00/velodyne/000000.bin"
+    #pred_label_path = "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/07/predictions/000460.label"
+    pred_label_path = "/home/atas/mixed_data/train/00/labels/000000.label"
 
     points = read_data.read_points(lidarfile_path)
     pred_labels = read_data.read_semlabels(pred_label_path)

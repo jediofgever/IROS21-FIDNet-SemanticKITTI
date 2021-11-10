@@ -10,10 +10,10 @@ import yaml
 
 from read_data import read_semlabels
 
-root = '/home/atas/poss_data/'
+root = '/home/atas/poss_dataset/'
 split = 'test'
 
-CFG = yaml.safe_load(open('/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/semantickitti19.yaml', 'r'))
+CFG = yaml.safe_load(open('/home/atas/poss_dataset/semantickitti19.yaml', 'r'))
 
 color_dict = CFG["color_map"]
 label_transfer_dict = CFG["learning_map"]
@@ -24,8 +24,8 @@ A = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
 B = SemLaserScan(nclasses=nclasses, sem_color_dict=color_dict,
                  project=True, H=64, W=512, fov_up=25.0, fov_down=-30.0)
 
-con_office_lidar = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/velodyne/000308.bin"
-con_office_lidar_label = "/home/atas/IROS21-FIDNet-SemanticKITTI/poss_data/test/07/labels/000308.label"
+con_office_lidar = "/home/atas/poss_dataset/train/00/velodyne/000308.bin"
+con_office_lidar_label = "/home/atas/poss_dataset/train/00/labels/000308.label"
 
 labl = read_semlabels(con_office_lidar_label)
 
@@ -34,7 +34,6 @@ print(np.unique(labl))
 A.open_scan(con_office_lidar)
 A.open_label(con_office_lidar_label)
 
- 
 f, axarr = plt.subplots(2,1) 
 axarr[0].imshow(A.proj_range)
 axarr[1].imshow(A.proj_sem_color)

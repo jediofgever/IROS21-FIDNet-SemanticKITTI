@@ -21,18 +21,19 @@ if __name__ == "__main__":
     pred_label_list = sorted(glob.glob(
         "/home/atas/IROS21-FIDNet-SemanticKITTI/method_predictions/sequences/*/*/*.label"))
 
-    vis = o3d.visualization.Visualizer()
-    vis.create_window()
+    vis_gt = o3d.visualization.Visualizer()
+    vis_pred = o3d.visualization.Visualizer()
 
-    pcd = o3d.geometry.PointCloud()
+    vis_gt.create_window(window_name='TopLeft', width=1000, height=1200, left=0, top=0)
+    vis_pred.create_window(window_name='TopRight', width=1000, height=1200, left=1000, top=0)
+
+    pcd_gt = o3d.geometry.PointCloud()
+    pcd_pred = o3d.geometry.PointCloud()
 
     # opt = vis.get_render_option()
     # opt.background_color = np.asarray([0, 0, 0])
 
     for index, val in enumerate(lidar_list):
-
-        print("Visualizing ", lidar_list[index])
-        print("Visualizing ", pred_label_list[index])
 
         points = read_data.read_points(lidar_list[index])
         pred_labels = read_data.read_semlabels(pred_label_list[index])
@@ -44,15 +45,23 @@ if __name__ == "__main__":
             pred_color.append(color_dict[pred_labels[i]])
             gt_color.append(color_dict[gt_labels[i]])
 
-        pcd.points = o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
-        pcd.colors = o3d.utility.Vector3dVector(np.asarray(gt_color) / 255.0)
+        pcd_gt.points = o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
+        pcd_pred.points = o3d.utility.Vector3dVector(np.asarray(points[:, 0:3]))
+
+        pcd_gt.colors = o3d.utility.Vector3dVector(np.asarray(gt_color) / 255.0)
+        pcd_pred.colors = o3d.utility.Vector3dVector(np.asarray(pred_color) / 255.0)
 
         if index == 0:
-            vis.add_geometry(pcd)
+            vis_gt.add_geometry(pcd_gt)
+            vis_pred.add_geometry(pcd_pred)
 
-        vis.update_geometry(pcd)
-        vis.update_geometry(pcd)
-        vis.poll_events()
-        vis.update_renderer()
+        vis_gt.update_geometry(pcd_gt)
+        vis_gt.poll_events()
+        vis_gt.update_renderer()
 
-    vis.destroy_window()
+        vis_pred.update_geometry(pcd_pred)
+        vis_pred.poll_events()
+        vis_pred.update_renderer()
+
+    vis_gt.destroy_window()
+    vis_pred.destroy_window()

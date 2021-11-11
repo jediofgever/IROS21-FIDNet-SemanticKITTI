@@ -63,29 +63,6 @@ parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
 
 args = parser.parse_args()
 
-learning_map = {
-    0: 0,     # unlabel
-    1: 7,     # car
-    2: 21,    # bike
-    3: 21,    # motocycle -> bike
-    4: 7,     # truck - > car
-    5: 7,     # other vehicle - > car
-    6: 4,     # person
-    7: 21,    # biker -> bike
-    8: 21,    # motocylist -> bike
-    9: 22,    # road - > ground
-    10: 22,   # parking ->ground
-    11: 22,   # sidewalk -> ground
-    12: 22,   # other ground -> ground
-    13: 15,   # building
-    14: 17,   # fence
-    15: 9,    # plants, vegetation
-    16: 8,    # trunk
-    17: 22,   # ground/terrain
-    18: 13,   # pole
-    19: 10    # traffic sign
-}
-
 learning_map_inv = {  # inverse of previous map
     0: 0,     # "unlabeled", and others ignored
     1: 10,     # "car"

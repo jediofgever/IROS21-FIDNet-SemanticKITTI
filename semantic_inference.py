@@ -20,7 +20,8 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.msg._point_cloud2 as pc2
-
+from ros2_numpy.ros2_numpy.point_cloud2 import *
+import ros2_numpy
 
 parser = argparse.ArgumentParser()
 
@@ -72,14 +73,14 @@ inv_label_dict = {  # inverse of previous map
     19: 81     # "traffic-sign"
 }
 
-'''
-
-'''
-
 
 class FidnetRosNode(Node):
     def __init__(self, args):
         super().__init__("FidnetRosNode")
+
+        root = '/home/atas/mixed_data/'
+        CFG = yaml.safe_load(open(root+'semantickitti19.yaml', 'r'))
+        self.color_dict = CFG["color_map"]
 
         self.args = args
         self.subscription = self.create_subscription(
@@ -87,6 +88,9 @@ class FidnetRosNode(Node):
             '/ouster/points',
             self.callback,
             10)
+
+        self.publisher = self.create_publisher(
+            PointCloud2, '/ouster/points/segmented', 10)
         self.subscription  # prevent unused variable warning
         self.initialize = False
 
@@ -207,6 +211,44 @@ class FidnetRosNode(Node):
         b = time.time()
 
         print("processed a frame with fidnet took: ", b-a)
+
+        points_arr = np.zeros((len(points),), dtype=[
+            ('x', np.float32),
+            ('y', np.float32),
+            ('z', np.float32),
+            ('r', np.uint8),
+            ('g', np.uint8),
+            ('b', np.uint8),
+            ('label', np.uint8)])
+
+        points_arr['x'] = points[:, 0]
+        points_arr['y'] = points[:, 1]
+        points_arr['z'] = points[:, 2]
+
+        r, g, b = [], [], []
+        label_array = []
+
+        for l in label:
+            r.append(self.color_dict[l][0])
+            g.append(self.color_dict[l][1])
+            b.append(self.color_dict[l][2])
+            label_array.append(l)
+
+        points_arr['r'] = r
+        points_arr['g'] = g
+        points_arr['b'] = b
+        points_arr['label'] = label_array
+        
+        points_arr = merge_rgb_fields(points_arr)
+
+        new_msg = array_to_pointcloud2(
+            points_arr, msg.header.stamp, msg.header.frame_id)
+        
+        new_msg = ros2_numpy.ros2_numpy.msgify(PointCloud2, points_arr)
+        new_msg.header = msg.header
+        
+
+        self.publisher.publish(new_msg)
 
 
 def main(args=None):

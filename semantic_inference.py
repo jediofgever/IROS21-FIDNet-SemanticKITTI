@@ -45,7 +45,7 @@ parser.add_argument('--eval_epoch',  dest="eval_epoch", default=49,
                     help="0 or from the beginning, or from the middle")
 parser.add_argument('--if_mixture',  dest="if_mixture",
                     default=True, help="if_mixture training")
-parser.add_argument('--if_KNN',  dest="if_KNN", default=2,
+parser.add_argument('--if_KNN',  dest="if_KNN", default=0,
                     help="0: no post; 1: original_knn; 2: our post")
 
 fidnet_args = parser.parse_args()
@@ -238,15 +238,13 @@ class FidnetRosNode(Node):
         points_arr['g'] = g
         points_arr['b'] = b
         points_arr['label'] = label_array
-        
-        points_arr = merge_rgb_fields(points_arr)
 
+        points_arr = merge_rgb_fields(points_arr)
         new_msg = array_to_pointcloud2(
             points_arr, msg.header.stamp, msg.header.frame_id)
-        
+
         new_msg = ros2_numpy.ros2_numpy.msgify(PointCloud2, points_arr)
         new_msg.header = msg.header
-        
 
         self.publisher.publish(new_msg)
 
